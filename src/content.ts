@@ -225,8 +225,7 @@ export const FUTURE_WORK = [
 export const BUILD_INFO = {
   stack: 'Vite, React 19, TypeScript (strict), Tailwind CSS, Canvas 2D, Vitest',
   execution: 'Runs entirely in your browser. 100% client-side with zero backend dependencies.',
-  // TODO_OWNER: GitHub repo URL placeholder
-  githubUrl: 'https://github.com/TODO_OWNER/canopy-network-maximizer',
+  githubUrl: 'https://github.com/Sahil-886/canopy-network-project-',
 };
 
 export const TEAM_INFO = {
