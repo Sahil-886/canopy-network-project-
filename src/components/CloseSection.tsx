@@ -5,14 +5,49 @@ export default function CloseSection() {
     <section id="close" className="field-section bg-[#F5F6F0]">
       <div className="field-container">
         {/* Pitch Closing Statement */}
-        <div className="text-column mb-12">
-          <span className="section-tag">Synthesis</span>
-          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#1C3527] leading-tight mb-4">
+        <div className="max-w-3xl mx-auto mb-12">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="px-2.5 py-1 rounded bg-[#1F6B45]/10 text-[#1F6B45] font-mono text-xs font-bold tracking-wider uppercase">
+              BOTH &bull; Presentation Close
+            </span>
+            <span className="text-xs text-[#3D5A49] font-sans">
+              Final Synthesis &amp; Takeaway
+            </span>
+          </div>
+
+          <h2 className="text-3xl sm:text-4xl font-serif font-bold text-[#1C3527] leading-tight mb-6">
             That&rsquo;s why we call it CanopyNet: not just forests, a network.
           </h2>
-          <p className="text-base text-[#3D5A49] leading-relaxed">
-            By grounding urban micro-forestry in classic, explainable data structures and algorithms, cities can move from haphazard tree planting to resilient, contiguous ecological networks where citizens thrive and urban wildlife moves freely.
-          </p>
+
+          {/* Verbatim Dialogue Script Card */}
+          <div className="bg-white border-l-4 border-[#1F6B45] rounded-r-xl p-6 sm:p-8 shadow-sm space-y-4 mb-8">
+            <div className="flex items-start gap-3">
+              <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-[#E7ECE2] text-[#1F6B45] shrink-0 mt-0.5">
+                SPEAKER 1
+              </span>
+              <p className="text-base text-[#1C3527] italic">
+                &ldquo;CanopyNet maximizes canopy cover, minimizes cost and land, and guarantees every patch stays connected.&rdquo;
+              </p>
+            </div>
+
+            <div className="flex items-start gap-3">
+              <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-[#E7ECE2] text-[#1F6B45] shrink-0 mt-0.5">
+                SPEAKER 2
+              </span>
+              <p className="text-base text-[#1C3527] italic">
+                &ldquo;It&rsquo;s a decision-support tool &mdash; any city or NGO can plug in real land data and get an optimized, connected forest plan out.&rdquo;
+              </p>
+            </div>
+
+            <div className="pt-3 border-t border-gray-100 flex items-start gap-3">
+              <span className="px-2 py-0.5 rounded text-[11px] font-bold bg-[#1F6B45] text-white shrink-0 mt-0.5">
+                BOTH
+              </span>
+              <p className="text-base sm:text-lg font-serif font-bold text-[#1F6B45]">
+                &ldquo;That&rsquo;s why we call it CanopyNet &mdash; not just forests, a network. Thank you.&rdquo;
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Build Architecture & Team Grid */}

@@ -25,13 +25,46 @@ export const SITE = {
 
 export const DATA_HONESTY_LABEL = 'Synthetic city, illustrative parameters';
 
+export const PITCH_SCRIPT = {
+  title: 'CanopyNet: Graph-Based Micro-Forest Optimization',
+  subtitle: 'Live Presentation & Viva Pitch Script',
+  speaker1: {
+    speaker: 'SPEAKER 1',
+    role: 'Problem & Motivation',
+    dialogue: [
+      "Cities are planting micro-forests today — organizations like Afforestt and SayTrees use methods like Miyawaki forestry. But there's a gap: planting decisions are mostly manual, and forests often end up scattered — isolated green patches with no connection between them.",
+      "That's a problem because wildlife needs corridors to move between habitats. A disconnected forest, no matter how rich, is still just an island.",
+      "So we asked: How do you decide where to plant, and how do you make sure what you plant connects into one living ecosystem — not isolated patches?",
+      "This ties directly to SDG 11 — Sustainable Cities, and SDG 15 — Life on Land.",
+    ],
+  },
+  speaker2: {
+    speaker: 'SPEAKER 2',
+    role: 'Solution & Algorithmic Architecture',
+    dialogue: [
+      "We treated this as a graph optimization problem, in three stages.",
+      "One — where to plant: a greedy set-cover algorithm picks land patches giving maximum coverage with minimum overlap.",
+      "Two — what to plant: a knapsack-style DP allocates species and budget across those patches to maximize biodiversity without overspending.",
+      "Three — our core idea — connecting them: we treat each forest as a graph node and use MST and Steiner tree logic to link them with the shortest possible corridors, turning scattered patches into one connected green network. A Union-Find structure keeps checking that the whole network stays connected.",
+      "Most tools stop at 'where to plant.' We go further — connectivity matters as much as coverage, because connected biodiversity scales, isolated biodiversity doesn't.",
+    ],
+  },
+  close: {
+    title: 'BOTH — Close',
+    speaker1: 'CanopyNet maximizes canopy cover, minimizes cost and land, and guarantees every patch stays connected.',
+    speaker2: "It's a decision-support tool — any city or NGO can plug in real land data and get an optimized, connected forest plan out.",
+    both: "That's why we call it CanopyNet — not just forests, a network. Thank you.",
+  },
+};
+
 export const PROBLEM = {
-  title: 'The problem',
-  speaker: 'Speaker 1: The urban forestry challenge',
+  title: 'The Problem',
+  speaker: 'SPEAKER 1 — Problem',
   paragraphs: [
-    'Urban areas around the world are facing intense heat-island effects and habitat loss. Micro-forests planted using methods like the Miyawaki technique are gaining momentum, spearheaded by organizations such as Afforestt and SayTrees. However, in crowded cities, these projects often end up as scattered, isolated green patches.',
-    'A disconnected forest is an ecological island. Small birds, pollinators, and urban wildlife require continuous vegetative corridors to feed, disperse, and sustain gene flow. If two habitats are separated by unbroken concrete and high-speed roadways, wildlife cannot safely cross.',
-    'Municipalities and conservation groups face two fundamental questions under constrained budgets: exactly where to plant to bring nature close to the maximum number of residents, and how to link those patches into a contiguous network.',
+    "Cities are planting micro-forests today — organizations like Afforestt and SayTrees use methods like Miyawaki forestry. But there's a gap: planting decisions are mostly manual, and forests often end up scattered — isolated green patches with no connection between them.",
+    "That's a problem because wildlife needs corridors to move between habitats. A disconnected forest, no matter how rich, is still just an island.",
+    "So we asked: How do you decide where to plant, and how do you make sure what you plant connects into one living ecosystem — not isolated patches?",
+    "This ties directly to SDG 11 — Sustainable Cities, and SDG 15 — Life on Land.",
   ],
   sdgAlignment: [
     {
@@ -50,9 +83,10 @@ export const PROBLEM = {
 };
 
 export const SOLUTION = {
-  title: 'The three-stage solution',
-  speaker: 'Speaker 2: Algorithmic pipeline',
-  keyIdea: 'Connectivity matters as much as coverage.',
+  title: 'The Three-Stage Solution',
+  speaker: 'SPEAKER 2 — Solution',
+  keyIdea:
+    'Connectivity matters as much as coverage, because connected biodiversity scales, isolated biodiversity doesn’t.',
   stages: [
     {
       id: 'stage-1',

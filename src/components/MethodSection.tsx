@@ -67,15 +67,40 @@ export default function MethodSection({ onSelectStage }: MethodSectionProps) {
   return (
     <section id="solution" className="field-section bg-[#F5F6F0]">
       <div className="field-container">
-        <div className="text-column mb-8">
-          <span className="section-tag">{SOLUTION.speaker}</span>
-          <h2 className="section-title">{SOLUTION.title}</h2>
-          <p className="text-lg font-serif italic text-[#1F6B45] mb-3">
-            &ldquo;{SOLUTION.keyIdea}&rdquo;
-          </p>
-          <p className="text-base text-[#3D5A49] leading-relaxed">
-            Most urban forestry projects simply say &ldquo;plant here.&rdquo; CanopyNet adds a network-science layer: &ldquo;plant here, and connect these into one contiguous living ecosystem.&rdquo;
-          </p>
+        <div className="max-w-3xl mx-auto mb-8">
+          <div className="flex items-center gap-2 mb-3">
+            <span className="px-2.5 py-1 rounded bg-[#1F6B45]/10 text-[#1F6B45] font-mono text-xs font-bold tracking-wider uppercase">
+              {SOLUTION.speaker}
+            </span>
+            <span className="text-xs text-[#3D5A49] font-sans">
+              Oral Presentation &bull; Graph Optimization Pipeline
+            </span>
+          </div>
+
+          <h2 className="section-title mb-6">{SOLUTION.title}</h2>
+
+          {/* Spoken Narrative Card */}
+          <div className="bg-white border-l-4 border-[#1F6B45] rounded-r-xl p-6 sm:p-8 shadow-sm mb-6 space-y-3">
+            <p className="text-base text-[#1C3527] leading-relaxed">
+              &ldquo;We treated this as a graph optimization problem, in three stages:
+            </p>
+            <ul className="space-y-2 text-sm text-[#1C3527] pl-2">
+              <li>
+                <strong>One &mdash; where to plant:</strong> a <span className="font-semibold text-[#1F6B45]">greedy set-cover algorithm</span> picks land patches giving maximum coverage with minimum overlap.
+              </li>
+              <li>
+                <strong>Two &mdash; what to plant:</strong> a <span className="font-semibold text-[#1F6B45]">knapsack-style DP</span> allocates species and budget across those patches to maximize biodiversity without overspending.
+              </li>
+              <li>
+                <strong>Three &mdash; our core idea &mdash; connecting them:</strong> we treat each forest as a graph node and use <span className="font-semibold text-[#1F6B45]">MST and Steiner tree logic</span> to link them with the shortest possible corridors, turning scattered patches into one connected green network. A <strong>Union-Find</strong> structure keeps checking that the whole network stays connected.
+              </li>
+            </ul>
+            <div className="p-3.5 rounded-lg bg-[#F5F6F0] border border-[#D7DECE] mt-3">
+              <p className="text-base font-serif italic text-[#1F6B45] font-bold leading-snug">
+                &ldquo;Most tools stop at &lsquo;where to plant.&rsquo; We go further &mdash; connectivity matters as much as coverage, because connected biodiversity scales, isolated biodiversity doesn&rsquo;t.&rdquo;
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* 6-Step End-to-End Flowchart Diagram */}

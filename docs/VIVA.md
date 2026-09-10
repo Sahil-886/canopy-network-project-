@@ -1,6 +1,39 @@
-# CanopyNet — Algorithm Viva Guide
+# CanopyNet — Algorithm Viva Guide & Presentation Script
 
-A plain-language guide for second-year engineering students explaining all 11 core DSA concepts used in CanopyNet.
+A complete guide for second-year engineering students explaining the problem motivation, presentation delivery script, and all 11 core DSA concepts used in CanopyNet.
+
+---
+
+## 🎙️ Spoken Presentation Script (Memorize for Demo Day)
+
+### SPEAKER 1 — Problem
+> "Cities are planting micro-forests today — organizations like Afforestt and SayTrees use methods like Miyawaki forestry. But there's a gap: planting decisions are mostly manual, and forests often end up scattered — isolated green patches with no connection between them.
+>
+> That's a problem because wildlife needs corridors to move between habitats. A disconnected forest, no matter how rich, is still just an island.
+>
+> So we asked: *How do you decide where to plant, and how do you make sure what you plant connects into one living ecosystem — not isolated patches?*
+>
+> This ties directly to **SDG 11 — Sustainable Cities**, and **SDG 15 — Life on Land**."
+
+---
+
+### SPEAKER 2 — Solution
+> "We treated this as a graph optimization problem, in three stages.
+>
+> **One — where to plant:** a **greedy set-cover algorithm** picks land patches giving maximum coverage with minimum overlap.
+>
+> **Two — what to plant:** a **knapsack-style DP** allocates species and budget across those patches to maximize biodiversity without overspending.
+>
+> **Three — our core idea — connecting them:** we treat each forest as a graph node and use **MST and Steiner tree logic** to link them with the shortest possible corridors, turning scattered patches into one connected green network. A **Union-Find** structure keeps checking that the whole network stays connected.
+>
+> Most tools stop at 'where to plant.' We go further — **connectivity matters as much as coverage**, because connected biodiversity scales, isolated biodiversity doesn't."
+
+---
+
+### BOTH — Close
+> **Speaker 1:** "CanopyNet maximizes canopy cover, minimizes cost and land, and guarantees every patch stays connected."  
+> **Speaker 2:** "It's a decision-support tool — any city or NGO can plug in real land data and get an optimized, connected forest plan out."  
+> ***Both:*** "That's why we call it CanopyNet — not just forests, a network. Thank you."
 
 ---
 
