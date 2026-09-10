@@ -230,11 +230,11 @@ export default function Controls({
           className="hidden"
           onChange={handleFileUpload}
         />
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
           <button
             type="button"
             onClick={() => fileInputRef.current?.click()}
-            className="btn-secondary text-xs py-1.5 px-2 text-center truncate"
+            className="btn-secondary text-xs py-2 px-2 text-center truncate"
             title="Import custom rectangular grid of H, B, R, W, P, V"
           >
             Load Land Map (CSV)
@@ -242,7 +242,7 @@ export default function Controls({
           <button
             type="button"
             onClick={onExportCsv}
-            className="btn-secondary text-xs py-1.5 px-2 text-center truncate"
+            className="btn-secondary text-xs py-2 px-2 text-center truncate"
             title="Export current grid as CSV template"
           >
             Download Map (CSV)
@@ -254,12 +254,12 @@ export default function Controls({
       {(onExportPNG || onExportJSON) && (
         <div className="pt-2 border-t border-[#D7DECE]">
           <span className="text-xs font-semibold text-[#1C3527] block mb-2">Export Simulation</span>
-          <div className="grid grid-cols-2 gap-2">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
             {onExportPNG && (
               <button
                 type="button"
                 onClick={onExportPNG}
-                className="btn-secondary text-xs py-1.5 px-2 text-center"
+                className="btn-secondary text-xs py-2 px-2 text-center"
               >
                 Export PNG Map
               </button>
@@ -268,7 +268,7 @@ export default function Controls({
               <button
                 type="button"
                 onClick={onExportJSON}
-                className="btn-secondary text-xs py-1.5 px-2 text-center"
+                className="btn-secondary text-xs py-2 px-2 text-center"
               >
                 Export JSON Data
               </button>

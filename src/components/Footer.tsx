@@ -4,8 +4,8 @@ export default function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="py-8 border-t border-[#D7DECE] bg-[#E7ECE2] text-xs text-[#3D5A49]">
-      <div className="field-container flex flex-col sm:flex-row items-center justify-between gap-4">
+    <footer className="py-8 pb-[max(2rem,env(safe-area-inset-bottom))] border-t border-[#D7DECE] bg-[#E7ECE2] text-xs text-[#3D5A49]">
+      <div className="field-container flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left">
         <div>
           <span className="font-bold text-[#1C3527]">{SITE.title}</span> &bull; {SITE.subtitle} &bull; {year}
         </div>

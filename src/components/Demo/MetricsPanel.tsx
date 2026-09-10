@@ -114,7 +114,7 @@ export default function MetricsPanel({ result }: MetricsPanelProps) {
   return (
     <div className="mt-8 space-y-6">
       {/* Top 4 KPI Cards */}
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         <div className="field-panel border-[#1F6B45]">
           <span className="text-xs font-semibold text-[#3D5A49] block">Residents Covered (300 m)</span>
           <div className="text-2xl font-bold font-serif text-[#1F6B45]">

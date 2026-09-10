@@ -43,6 +43,8 @@ html {
   scroll-behavior: smooth;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -65,6 +67,9 @@ body {
   font-size: 1rem;
   line-height: 1.6;
   font-variant-numeric: tabular-nums;
+  overflow-x: hidden;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -73,6 +78,7 @@ h1, h2, h3, h4, h5, h6 {
   line-height: 1.25;
   margin: 0;
   color: var(--color-pine);
+  overflow-wrap: break-word;
 }
 
 a {
@@ -80,10 +86,17 @@ a {
   text-decoration: underline;
   text-underline-offset: 2px;
   transition: color 0.15s ease;
+  touch-action: manipulation;
 }
 
 a:hover {
   color: var(--color-forest-hover);
+}
+
+button {
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
 }
 
 :focus-visible {
@@ -91,12 +104,22 @@ a:hover {
   outline-offset: 2px;
 }
 
-/* Layout container */
+/* Layout container with safe-area insets */
 .field-container {
+  width: 100%;
   max-width: 1200px;
   margin: 0 auto;
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  padding-left: 1.25rem;
+  padding-right: 1.25rem;
+  padding-left: max(1.25rem, env(safe-area-inset-left));
+  padding-right: max(1.25rem, env(safe-area-inset-right));
+}
+
+@media (min-width: 640px) {
+  .field-container {
+    padding-left: 1.5rem;
+    padding-right: 1.5rem;
+  }
 }
 
 .text-column {
@@ -295,4 +318,44 @@ input[type="text"]:focus {
   border-radius: 4px;
   padding: 0.5rem;
   box-shadow: 0 2px 8px rgba(28, 53, 39, 0.06);
+}
+
+/* Responsive Scrolling & Touch Momentum */
+.overflow-x-auto,
+.overflow-y-auto {
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-sage-dark) transparent;
+}
+
+.overflow-x-auto::-webkit-scrollbar,
+.overflow-y-auto::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.overflow-x-auto::-webkit-scrollbar-thumb,
+.overflow-y-auto::-webkit-scrollbar-thumb {
+  background-color: var(--color-sage-dark);
+  border-radius: 3px;
+}
+
+/* Mobile Responsive Optimization (< 640px) */
+@media (max-width: 640px) {
+  .btn-primary,
+  .btn-secondary {
+    min-height: 42px;
+  }
+  
+  .field-section {
+    padding: 2.5rem 0;
+  }
+  
+  .section-title {
+    font-size: 1.625rem;
+  }
+  
+  .field-panel {
+    padding: 1rem;
+  }
 }

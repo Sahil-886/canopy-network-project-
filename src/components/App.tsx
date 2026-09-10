@@ -48,24 +48,29 @@ export default function App() {
     setActiveStep(stepMap[stageIndex] ?? 0);
   };
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-[#F5F6F0] text-[#1C3527]">
       {/* Sticky Field Navigation */}
       <nav
-        className="sticky top-0 z-50 bg-[#F5F6F0]/90 backdrop-blur-md border-b border-[#D7DECE]"
+        className="sticky top-0 z-50 bg-[#F5F6F0]/95 backdrop-blur-md border-b border-[#D7DECE]"
         role="navigation"
         aria-label="Main navigation"
       >
         <div className="field-container flex items-center justify-between h-14">
           <a
             href="#"
-            className="font-serif font-bold text-lg text-[#1C3527] no-underline hover:text-[#1F6B45]"
+            className="font-serif font-bold text-lg text-[#1C3527] no-underline hover:text-[#1F6B45] flex items-center gap-2"
           >
-            {SITE.title}
+            <span className="text-xl">🌳</span>
+            <span>{SITE.title}</span>
           </a>
-          <ul className="flex items-center gap-5 list-none m-0 p-0">
+
+          {/* Desktop Navigation */}
+          <ul className="hidden sm:flex items-center gap-5 list-none m-0 p-0">
             {NAV_ITEMS.map((item) => (
-              <li key={item.id} className="hidden sm:block">
+              <li key={item.id}>
                 <a
                   href={`#${item.id}`}
                   className="text-xs font-semibold text-[#3D5A49] hover:text-[#1F6B45] no-underline transition-colors"
@@ -77,13 +82,54 @@ export default function App() {
             <li>
               <a
                 href="#demo"
-                className="btn-primary text-xs py-1.5 px-3 no-underline"
+                className="btn-primary text-xs py-1.5 px-3 no-underline shadow-xs"
               >
                 Run Optimizer
               </a>
             </li>
           </ul>
+
+          {/* Mobile Menu & Optimizer Action */}
+          <div className="flex items-center gap-2 sm:hidden">
+            <a
+              href="#demo"
+              className="btn-primary text-xs py-1 px-2.5 no-underline"
+            >
+              Run Optimizer
+            </a>
+            <button
+              type="button"
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="p-2 rounded-md text-[#1C3527] hover:bg-[#E7ECE2] focus:outline-none"
+              aria-label={mobileMenuOpen ? 'Close navigation menu' : 'Open navigation menu'}
+              aria-expanded={mobileMenuOpen}
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
         </div>
+
+        {/* Mobile Dropdown Drawer */}
+        {mobileMenuOpen && (
+          <div className="sm:hidden border-t border-[#D7DECE] bg-[#F5F6F0] px-4 pt-2 pb-4 space-y-1 shadow-lg animate-fadeIn">
+            {NAV_ITEMS.map((item) => (
+              <a
+                key={item.id}
+                href={`#${item.id}`}
+                onClick={() => setMobileMenuOpen(false)}
+                className="block py-2 px-3 rounded text-sm font-semibold text-[#1C3527] hover:bg-[#E7ECE2] no-underline transition-colors"
+              >
+                {item.label}
+              </a>
+            ))}
+          </div>
+        )}
       </nav>
 
       <main>
