@@ -3,13 +3,13 @@ import { SITE } from '../content';
 import type { PipelineResult } from '../engine/types';
 import { LandType } from '../engine/types';
 
-const MAP_BASE_COLORS: Record<LandType, string> = {
-  [LandType.HOMES]: '#E2DCCF',
-  [LandType.BUILDING]: '#CBC7BE',
+const GM_COLORS: Record<LandType, string> = {
+  [LandType.HOMES]: '#F3EFEA',
+  [LandType.BUILDING]: '#E8ECEF',
   [LandType.ROAD]: '#FFFFFF',
-  [LandType.WATER]: '#9CC3D5',
-  [LandType.PARK]: '#A8C39A',
-  [LandType.VACANT]: '#DCE3D6',
+  [LandType.WATER]: '#C4E3ED',
+  [LandType.PARK]: '#D2F4D3',
+  [LandType.VACANT]: '#ECEEE9',
 };
 
 interface HeroProps {
@@ -38,52 +38,115 @@ export default function Hero({ result }: HeroProps) {
     const cellW = rect.width / grid.width;
     const cellH = rect.height / grid.height;
 
-    // 1. Draw city base grid
+    // 1. Draw Google Maps style city base
     for (let y = 0; y < grid.height; y++) {
       for (let x = 0; x < grid.width; x++) {
         const idx = y * grid.width + x;
         const type = grid.land[idx] as LandType;
 
         if (type === LandType.HOMES) {
-          // Darker shading for higher resident counts
           const pop = grid.population[idx];
           const popRatio = Math.min(1, Math.max(0, (pop - 20) / 100));
-          const gray = Math.round(226 - popRatio * 28);
-          ctx.fillStyle = `rgb(${gray}, ${gray - 6}, ${gray - 18})`;
-        } else {
-          ctx.fillStyle = MAP_BASE_COLORS[type] || '#E2DCCF';
-        }
+          const r = Math.round(243 - popRatio * 18);
+          const g = Math.round(239 - popRatio * 24);
+          const b = Math.round(234 - popRatio * 32);
+          ctx.fillStyle = `rgb(${r}, ${g}, ${b})`;
+          ctx.fillRect(x * cellW, y * cellH, cellW + 0.5, cellH + 0.5);
 
-        ctx.fillRect(x * cellW, y * cellH, cellW + 0.5, cellH + 0.5);
+          ctx.strokeStyle = '#E2DDD5';
+          ctx.lineWidth = 0.5;
+          ctx.strokeRect(x * cellW, y * cellH, cellW, cellH);
+        } else if (type === LandType.BUILDING) {
+          ctx.fillStyle = GM_COLORS[LandType.BUILDING];
+          ctx.fillRect(x * cellW, y * cellH, cellW + 0.5, cellH + 0.5);
+          ctx.strokeStyle = '#D5DCE2';
+          ctx.lineWidth = 0.75;
+          ctx.strokeRect(x * cellW + 0.5, y * cellH + 0.5, cellW - 1, cellH - 1);
+        } else if (type === LandType.WATER) {
+          ctx.fillStyle = GM_COLORS[LandType.WATER];
+          ctx.fillRect(x * cellW, y * cellH, cellW + 0.5, cellH + 0.5);
+        } else if (type === LandType.PARK) {
+          ctx.fillStyle = GM_COLORS[LandType.PARK];
+          ctx.fillRect(x * cellW, y * cellH, cellW + 0.5, cellH + 0.5);
+          ctx.strokeStyle = '#BCE3BE';
+          ctx.lineWidth = 0.5;
+          ctx.strokeRect(x * cellW, y * cellH, cellW, cellH);
+        } else {
+          ctx.fillStyle = GM_COLORS[type] || '#ECEEE9';
+          ctx.fillRect(x * cellW, y * cellH, cellW + 0.5, cellH + 0.5);
+        }
       }
     }
 
-    // 2. Draw coverage zones (soft translucent green)
+    // 2. Google Maps Roads
+    ctx.fillStyle = '#D6D3CD';
+    for (let y = 0; y < grid.height; y++) {
+      for (let x = 0; x < grid.width; x++) {
+        if (grid.land[y * grid.width + x] === LandType.ROAD) {
+          ctx.fillRect(x * cellW - 0.5, y * cellH - 0.5, cellW + 1, cellH + 1);
+        }
+      }
+    }
+    ctx.fillStyle = '#FFFFFF';
+    for (let y = 0; y < grid.height; y++) {
+      for (let x = 0; x < grid.width; x++) {
+        if (grid.land[y * grid.width + x] === LandType.ROAD) {
+          ctx.fillRect(x * cellW, y * cellH, cellW, cellH);
+        }
+      }
+    }
+
+    // 3. Greenery Coverage Buffers
     const progress = progressRef.current;
     if (progress > 0.15) {
-      ctx.fillStyle = 'rgba(61, 165, 106, 0.12)';
+      ctx.fillStyle = 'rgba(46, 125, 50, 0.14)';
       for (const cellIdx of finalCoveredHomes) {
         const x = cellIdx % grid.width;
         const y = Math.floor(cellIdx / grid.width);
-        ctx.fillRect(x * cellW, y * cellH, cellW + 0.5, cellH + 0.5);
+        ctx.fillRect(x * cellW, y * cellH, cellW, cellH);
       }
     }
 
-    // 3. Draw micro-forest plots (Leaf green #3DA56A)
+    // 4. Micro-Forests (Rich Emerald Green #2E7D32)
     const totalPlots = selectedPlots.length;
     const plotsToShow = Math.floor(totalPlots * Math.min(1, progress * 1.8));
 
     for (let i = 0; i < plotsToShow; i++) {
       const plot = selectedPlots[i];
-      ctx.fillStyle = '#3DA56A';
+      ctx.fillStyle = '#2E7D32';
       for (const cell of plot.cells) {
         const px = cell % grid.width;
         const py = Math.floor(cell / grid.width);
         ctx.fillRect(px * cellW, py * cellH, cellW, cellH);
       }
+
+      // Marker pin
+      const pinX = plot.cx * cellW + cellW / 2;
+      const pinY = plot.cy * cellH + cellH / 2;
+      const pinR = 8;
+
+      ctx.fillStyle = 'rgba(0, 0, 0, 0.25)';
+      ctx.beginPath();
+      ctx.arc(pinX, pinY + 1, pinR, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.fillStyle = '#1C3527';
+      ctx.beginPath();
+      ctx.arc(pinX, pinY, pinR, 0, Math.PI * 2);
+      ctx.fill();
+
+      ctx.strokeStyle = '#FFFFFF';
+      ctx.lineWidth = 1.5;
+      ctx.stroke();
+
+      ctx.fillStyle = '#FFFFFF';
+      ctx.font = 'bold 8px "Public Sans", sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(String(i + 1), pinX, pinY);
     }
 
-    // 4. Draw corridors (Ochre #B7791F with Pine casing, Plum #8E3B6E for too-long links)
+    // 5. Corridors
     if (progress > 0.35) {
       const corridorProgress = Math.min(1, (progress - 0.35) / 0.65);
 
@@ -91,7 +154,6 @@ export default function Hero({ result }: HeroProps) {
         const pathLen = Math.floor(edge.path.length * corridorProgress);
         if (pathLen < 2) continue;
 
-        // Draw casing first
         ctx.beginPath();
         const startCell = edge.path[0];
         ctx.moveTo(
@@ -107,20 +169,19 @@ export default function Hero({ result }: HeroProps) {
           );
         }
 
-        ctx.strokeStyle = '#1C3527'; // Pine casing
+        ctx.strokeStyle = '#1C3527';
         ctx.lineWidth = 4;
         ctx.lineCap = 'round';
         ctx.lineJoin = 'round';
         ctx.setLineDash([]);
         ctx.stroke();
 
-        // Core corridor stroke
         ctx.lineWidth = 2.5;
         if (!edge.viable) {
-          ctx.strokeStyle = '#8E3B6E'; // Plum
+          ctx.strokeStyle = '#8E3B6E';
           ctx.setLineDash([4, 3]);
         } else {
-          ctx.strokeStyle = '#B7791F'; // Ochre
+          ctx.strokeStyle = '#E67E22';
           ctx.setLineDash([]);
         }
         ctx.stroke();
@@ -197,14 +258,15 @@ export default function Hero({ result }: HeroProps) {
           </div>
         </div>
 
-        <div className="lg:col-span-6 relative aspect-square w-full canvas-frame overflow-hidden bg-[#E7ECE2]">
+        <div className="lg:col-span-6 relative aspect-square w-full canvas-frame overflow-hidden bg-[#F3EFEA] shadow-lg rounded-xl">
           <canvas
             ref={canvasRef}
-            className="w-full h-full block rounded"
+            className="w-full h-full block"
             aria-label="Live preview map showing progressive optimization of urban micro-forests and wildlife corridors"
           />
-          <div className="absolute bottom-3 left-3 bg-[#F5F6F0]/90 backdrop-blur-xs px-3 py-1.5 rounded text-xs text-[#3D5A49] border border-[#D7DECE] shadow-xs">
-            Synthesized district network &bull; 64&times;64 grid
+          <div className="absolute bottom-3 left-3 bg-white/90 backdrop-blur-xs px-3 py-1.5 rounded-md text-xs font-medium text-gray-700 border border-gray-200 shadow-sm flex items-center gap-2">
+            <span className="w-2 h-2 rounded-full bg-[#2E7D32] animate-pulse" />
+            Live Procedural City &bull; 64&times;64 Grid
           </div>
         </div>
       </div>

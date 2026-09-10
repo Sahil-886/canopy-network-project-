@@ -394,17 +394,35 @@ export default function Demo({
               onTooltip={setTooltip}
             />
 
-            {/* Cell Inspection Tooltip */}
+            {/* Google Maps Style InfoWindow Tooltip */}
             {tooltip && (
               <div
-                className="fixed bg-[#F5F6F0] text-[#1C3527] border border-[#1C3527] rounded px-2.5 py-1.5 text-xs shadow-md pointer-events-none z-50 font-mono"
-                style={{ left: tooltip.x + 12, top: tooltip.y - 36 }}
+                className="fixed bg-white text-gray-900 border border-gray-200 rounded-lg px-3 py-2 text-xs shadow-lg pointer-events-none z-50 transition-transform duration-75"
+                style={{ left: tooltip.x + 14, top: tooltip.y - 42 }}
               >
-                <div className="font-bold text-[#1F6B45]">
-                  {tooltip.landType} ({tooltip.cellX}, {tooltip.cellY})
+                <div className="flex items-center gap-1.5 font-bold text-gray-900 mb-0.5">
+                  <span className="w-2 h-2 rounded-full bg-[#1F6B45]" />
+                  <span>{tooltip.landType}</span>
+                  <span className="text-[10px] text-gray-400 font-mono font-normal">
+                    ({tooltip.cellX}, {tooltip.cellY})
+                  </span>
                 </div>
-                {tooltip.residents > 0 && <div>Population: {tooltip.residents} residents</div>}
-                <div>Coverage status: {tooltip.covered ? 'Covered ✓' : 'Unreached'}</div>
+                {tooltip.residents > 0 && (
+                  <div className="text-[11px] text-gray-600">
+                    Population: <strong>{tooltip.residents} residents</strong>
+                  </div>
+                )}
+                <div className="text-[11px] font-medium mt-0.5">
+                  {tooltip.covered ? (
+                    <span className="text-[#2E7D32] flex items-center gap-1">
+                      <span className="font-bold">✓</span> Within 300 m green space
+                    </span>
+                  ) : (
+                    <span className="text-gray-400">
+                      Outside green space buffer
+                    </span>
+                  )}
+                </div>
               </div>
             )}
 
