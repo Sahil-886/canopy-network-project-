@@ -7,6 +7,7 @@ import ForestPanel from './ForestPanel';
 import StepThrough from './StepThrough';
 import BrushToolbar, { type BrushMode } from './BrushToolbar';
 import { parseLandMapCsv, exportLandMapToCsv } from '../../engine/csv';
+import { findSteppingStones } from '../../engine/steiner';
 import { LandType } from '../../engine/types';
 import { DATA_HONESTY_LABEL } from '../../content';
 
@@ -288,6 +289,32 @@ export default function Demo({
     URL.revokeObjectURL(url);
   }, [result, localParams]);
 
+  // Steiner Stepping Stone candidate finder
+  const handleSuggestSteinerJunctions = useCallback(() => {
+    if (!result) return;
+    const selectedIds = new Set(result.selectedPlots.map((p) => p.id));
+    const stones = findSteppingStones(
+      customGrid || result.grid,
+      result.plots,
+      selectedIds,
+      result.mstEdges,
+      localParams.travelLimitM
+    );
+    if (stones.length === 0) {
+      setCsvAlert({
+        type: 'error',
+        message: 'No unselected vacant plots found that can bridge disconnected clusters within travel threshold.',
+      });
+    } else {
+      setSelectedForest(stones[0]);
+      setCsvAlert({
+        type: 'success',
+        message: `Steiner heuristic identified ${stones.length} bridging stepping-stone(s). Inspecting Plot #${stones[0].id}.`,
+      });
+    }
+    setTimeout(() => setCsvAlert(null), 6000);
+  }, [result, customGrid, localParams.travelLimitM]);
+
   // Animation controller
   useEffect(() => {
     if (!animating || animPhase === 'done' || animPhase === 'idle') return;
@@ -450,6 +477,7 @@ export default function Demo({
               onStartStepThrough={() => setStep(1)}
               onImportCsv={handleImportCsv}
               onExportCsv={handleExportCsv}
+              onSuggestSteinerJunctions={handleSuggestSteinerJunctions}
               onExportPNG={handleExportPNG}
               onExportJSON={handleExportJSON}
             />

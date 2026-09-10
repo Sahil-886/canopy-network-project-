@@ -14,6 +14,7 @@ interface ControlsProps {
   onStartStepThrough: () => void;
   onImportCsv: (csvText: string) => void;
   onExportCsv: () => void;
+  onSuggestSteinerJunctions?: () => void;
   onExportPNG?: () => void;
   onExportJSON?: () => void;
 }
@@ -38,6 +39,7 @@ export default function Controls({
   onStartStepThrough,
   onImportCsv,
   onExportCsv,
+  onSuggestSteinerJunctions,
   onExportPNG,
   onExportJSON,
 }: ControlsProps) {
@@ -177,6 +179,17 @@ export default function Controls({
         >
           Step-Through Pipeline Tour &rarr;
         </button>
+
+        {result && result.groups.length > 1 && onSuggestSteinerJunctions && (
+          <button
+            type="button"
+            onClick={onSuggestSteinerJunctions}
+            className="w-full py-1.5 px-2.5 rounded text-xs font-semibold bg-[#8E3B6E]/10 text-[#8E3B6E] hover:bg-[#8E3B6E]/20 border border-[#8E3B6E]/30 transition-colors flex items-center justify-center gap-1.5"
+            title="Identify affordable vacant plots along severed corridors to bridge habitat gaps"
+          >
+            <span>&#9881;</span> Suggest Steiner Stepping Stones ({result.groups.length} groups)
+          </button>
+        )}
       </div>
 
       {/* Layer Toggles */}

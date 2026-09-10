@@ -4,6 +4,57 @@ interface MethodSectionProps {
   onSelectStage: (stageIndex: number) => void;
 }
 
+const FLOWCHART_STEPS = [
+  {
+    num: 1,
+    title: 'Input & Discretization',
+    algo: '2D Grid & Spatial Cells',
+    desc: 'Divide city into uniform 25m cells (or Quadtree parcels in dense areas).',
+    badge: 'Input',
+    stageIndex: 0,
+  },
+  {
+    num: 2,
+    title: 'Land & Resistance Filter',
+    algo: 'BFS & Resistance Matrix',
+    desc: 'Exclude buildings, homes & water; isolate contiguous vacant plots.',
+    badge: 'Filter',
+    stageIndex: 0,
+  },
+  {
+    num: 3,
+    title: 'Budgeted Set Cover',
+    algo: 'Greedy Approximation',
+    desc: 'Pick plots maximizing newly reached residents within 300m per rupee.',
+    badge: 'Stage 1',
+    stageIndex: 0,
+  },
+  {
+    num: 4,
+    title: 'Species Allocation',
+    algo: '0/1 Knapsack (DP)',
+    desc: 'Allocate native species across 4 vertical layers for maximal biodiversity.',
+    badge: 'Stage 2',
+    stageIndex: 1,
+  },
+  {
+    num: 5,
+    title: 'Corridor Routing',
+    algo: 'Dijkstra + Kruskal MST',
+    desc: 'Route corridors around buildings; link forests at lowest total cost.',
+    badge: 'Stage 3',
+    stageIndex: 2,
+  },
+  {
+    num: 6,
+    title: 'Validate Connectivity',
+    algo: 'Union-Find (DSU)',
+    desc: 'Check wildlife dispersal limit; identify clusters and Steiner junctions.',
+    badge: 'Verification',
+    stageIndex: 2,
+  },
+];
+
 export default function MethodSection({ onSelectStage }: MethodSectionProps) {
   const handleStageClick = (stageIndex: number) => {
     onSelectStage(stageIndex);
@@ -16,22 +67,70 @@ export default function MethodSection({ onSelectStage }: MethodSectionProps) {
   return (
     <section id="solution" className="field-section bg-[#F5F6F0]">
       <div className="field-container">
-        <div className="text-column mb-10">
+        <div className="text-column mb-8">
           <span className="section-tag">{SOLUTION.speaker}</span>
           <h2 className="section-title">{SOLUTION.title}</h2>
-          <p className="text-lg font-serif italic text-[#1F6B45] mb-4">
+          <p className="text-lg font-serif italic text-[#1F6B45] mb-3">
             &ldquo;{SOLUTION.keyIdea}&rdquo;
           </p>
           <p className="text-base text-[#3D5A49] leading-relaxed">
-            CanopyNet structures the urban greening dilemma into three sequential, mathematically rigorous DSA problems. Click any stage to inspect it directly in the live interactive simulator.
+            Most urban forestry projects simply say &ldquo;plant here.&rdquo; CanopyNet adds a network-science layer: &ldquo;plant here, and connect these into one contiguous living ecosystem.&rdquo;
           </p>
         </div>
 
+        {/* 6-Step End-to-End Flowchart Diagram */}
+        <div className="mb-12">
+          <div className="flex items-center justify-between mb-3">
+            <span className="text-xs font-bold uppercase tracking-wider text-[#1C3527]">
+              End-to-End Algorithmic Pipeline Flowchart
+            </span>
+            <span className="text-xs text-[#3D5A49]">Click any step to inspect in the interactive simulator</span>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-3">
+            {FLOWCHART_STEPS.map((step, idx) => (
+              <div
+                key={step.num}
+                onClick={() => handleStageClick(step.stageIndex)}
+                className="cursor-pointer group relative p-3.5 rounded-lg bg-white border border-[#D7DECE] hover:border-[#1F6B45] hover:shadow-md transition-all flex flex-col justify-between"
+              >
+                <div>
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="w-6 h-6 rounded-full bg-[#E7ECE2] text-[#1F6B45] group-hover:bg-[#1F6B45] group-hover:text-white flex items-center justify-center text-xs font-bold transition-colors">
+                      {step.num}
+                    </span>
+                    <span className="text-[10px] font-semibold text-[#3D5A49] px-1.5 py-0.5 rounded bg-[#F5F6F0] border border-[#D7DECE]">
+                      {step.badge}
+                    </span>
+                  </div>
+                  <h4 className="text-sm font-bold text-[#1C3527] group-hover:text-[#1F6B45] transition-colors leading-tight mb-1">
+                    {step.title}
+                  </h4>
+                  <div className="text-[11px] font-mono font-semibold text-[#B7791F] mb-1.5">
+                    {step.algo}
+                  </div>
+                  <p className="text-xs text-[#3D5A49] leading-relaxed">
+                    {step.desc}
+                  </p>
+                </div>
+
+                <div className="mt-3 pt-2 border-t border-gray-100 flex items-center justify-between text-[11px] text-[#1F6B45] font-semibold">
+                  <span>Simulate Step &rarr;</span>
+                  {idx < FLOWCHART_STEPS.length - 1 && (
+                    <span className="hidden lg:inline text-gray-300 font-bold">&rsaquo;</span>
+                  )}
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* The 3 Core Academic Pitch Stages */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {SOLUTION.stages.map((stage) => (
             <div
               key={stage.id}
-              className="field-panel flex flex-col justify-between hover:border-[#1F6B45] transition-colors"
+              className="field-panel flex flex-col justify-between hover:border-[#1F6B45] transition-colors bg-white rounded-lg shadow-xs"
             >
               <div>
                 <div className="flex items-center justify-between mb-2">
