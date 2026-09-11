@@ -8,10 +8,9 @@ import Demo from './Demo/Demo';
 import ResultsSection from './ResultsSection';
 import CloseSection from './CloseSection';
 import Footer from './Footer';
-import { generateCity } from '../engine/city';
-import { runPipeline } from '../engine';
 import { DEFAULT_PARAMS } from '../engine/config';
 import type { PipelineResult, Params, Grid } from '../engine/types';
+import { executeOptimization, checkBackendHealth, type BackendStatus } from '../api';
 
 const NAV_ITEMS = [
   { id: 'problem', label: 'The Problem' },
@@ -26,14 +25,32 @@ export default function App() {
   const [result, setResult] = useState<PipelineResult | null>(null);
   const [params, setParams] = useState<Params>(DEFAULT_PARAMS);
   const [activeStep, setActiveStep] = useState(0);
+  const [backendStatus, setBackendStatus] = useState<BackendStatus>({
+    online: false,
+    engine: 'In-Browser TypeScript',
+    url: '',
+  });
   const initialRun = useRef(false);
 
-  const handleRun = useCallback((p: Params, customGrid?: Grid) => {
-    const city = customGrid || generateCity(p.seed, p.width, p.height);
-    const r = runPipeline(city, p);
-    setResult(r);
-    setParams(p);
+  useEffect(() => {
+    checkBackendHealth().then((st) => setBackendStatus(st));
   }, []);
+
+  const handleRun = useCallback(
+    async (p: Params, customGrid?: Grid) => {
+      setParams(p);
+      const { result: r, usedBackend } = await executeOptimization(p, customGrid);
+      setResult(r);
+      if (usedBackend && !backendStatus.online) {
+        setBackendStatus({
+          online: true,
+          engine: 'Python FastAPI',
+          url: 'http://localhost:8001',
+        });
+      }
+    },
+    [backendStatus.online]
+  );
 
   useEffect(() => {
     if (!initialRun.current) {
@@ -143,6 +160,7 @@ export default function App() {
           onRun={handleRun}
           currentStep={activeStep}
           onStepChange={setActiveStep}
+          backendStatus={backendStatus}
         />
         <ResultsSection result={result} />
         <CloseSection />

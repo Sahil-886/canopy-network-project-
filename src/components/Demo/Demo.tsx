@@ -10,6 +10,7 @@ import { parseLandMapCsv, exportLandMapToCsv } from '../../engine/csv';
 import { findSteppingStones } from '../../engine/steiner';
 import { LandType } from '../../engine/types';
 import { DATA_HONESTY_LABEL } from '../../content';
+import type { BackendStatus } from '../../api';
 
 interface DemoProps {
   result: PipelineResult | null;
@@ -17,6 +18,7 @@ interface DemoProps {
   onRun: (params: Params, customGrid?: Grid) => void;
   currentStep?: number;
   onStepChange?: (step: number) => void;
+  backendStatus?: BackendStatus;
 }
 
 export default function Demo({
@@ -25,6 +27,7 @@ export default function Demo({
   onRun,
   currentStep: externalStep,
   onStepChange: externalSetStep,
+  backendStatus,
 }: DemoProps) {
   const [localParams, setLocalParams] = useState<Params>(params);
   const [animating, setAnimating] = useState(false);
@@ -480,6 +483,7 @@ export default function Demo({
               onSuggestSteinerJunctions={handleSuggestSteinerJunctions}
               onExportPNG={handleExportPNG}
               onExportJSON={handleExportJSON}
+              backendStatus={backendStatus}
             />
           </div>
         </div>

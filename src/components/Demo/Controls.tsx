@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import type { PipelineResult, Params } from '../../engine/types';
 import type { CanvasLayers } from './Canvas';
+import type { BackendStatus } from '../../api';
 
 interface ControlsProps {
   params: Params;
@@ -17,6 +18,7 @@ interface ControlsProps {
   onSuggestSteinerJunctions?: () => void;
   onExportPNG?: () => void;
   onExportJSON?: () => void;
+  backendStatus?: BackendStatus;
 }
 
 const LAYER_ITEMS: ReadonlyArray<{ key: keyof CanvasLayers; label: string; color: string }> = [
@@ -42,6 +44,7 @@ export default function Controls({
   onSuggestSteinerJunctions,
   onExportPNG,
   onExportJSON,
+  backendStatus,
 }: ControlsProps) {
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -59,6 +62,41 @@ export default function Controls({
 
   return (
     <div className="field-panel space-y-4">
+      {/* Backend API Engine Indicator */}
+      <div className="p-2.5 rounded bg-white/90 border border-[#D7DECE] text-xs shadow-xs">
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <span
+              className={`w-2.5 h-2.5 rounded-full ${
+                backendStatus?.online
+                  ? 'bg-[#1F6B45] animate-pulse'
+                  : 'bg-[#B7791F]'
+              }`}
+            />
+            <div>
+              <span className="font-bold text-[#1C3527] block leading-tight">
+                {backendStatus?.online ? 'FastAPI Python Server' : 'In-Browser Engine'}
+              </span>
+              <span className="text-[10px] text-[#3D5A49] font-mono">
+                {backendStatus?.online ? 'REST API (Port 8001)' : 'Client-Side TypeScript'}
+              </span>
+            </div>
+          </div>
+          {backendStatus?.online && (
+            <a
+              href="http://localhost:8001/docs"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-[11px] font-semibold text-[#1F6B45] hover:underline flex items-center gap-0.5"
+              title="Open FastAPI interactive Swagger documentation in a new tab"
+            >
+              <span>Swagger API</span>
+              <span>&nearr;</span>
+            </a>
+          )}
+        </div>
+      </div>
+
       {/* Seed & New City */}
       <div>
         <div className="flex justify-between items-center mb-1 text-xs">
