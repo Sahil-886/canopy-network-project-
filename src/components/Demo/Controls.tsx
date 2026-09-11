@@ -78,13 +78,17 @@ export default function Controls({
                 {backendStatus?.online ? 'FastAPI Python Server' : 'In-Browser Engine'}
               </span>
               <span className="text-[10px] text-[#3D5A49] font-mono">
-                {backendStatus?.online ? 'REST API (Port 8001)' : 'Client-Side TypeScript'}
+                {backendStatus?.online
+                  ? backendStatus.url.includes('onrender.com')
+                    ? 'Render Cloud (HTTPS)'
+                    : 'REST API (Port 8001)'
+                  : 'Client-Side TypeScript'}
               </span>
             </div>
           </div>
           {backendStatus?.online && (
             <a
-              href="http://localhost:8001/docs"
+              href={`${backendStatus.url || 'https://canopy-network-project-1.onrender.com'}/docs`}
               target="_blank"
               rel="noopener noreferrer"
               className="text-[11px] font-semibold text-[#1F6B45] hover:underline flex items-center gap-0.5"

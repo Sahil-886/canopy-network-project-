@@ -7,7 +7,25 @@ import type { Grid, Params, PipelineResult } from './engine/types';
 import { runPipeline } from './engine';
 import { generateCity } from './engine/city';
 
-export const API_BASE_URL = 'http://localhost:8001';
+export function getApiBaseUrl(): string {
+  // If explicitly set via environment variable
+  if (import.meta.env.VITE_API_URL) {
+    return import.meta.env.VITE_API_URL;
+  }
+
+  // If running locally in development on localhost
+  if (
+    typeof window !== 'undefined' &&
+    (window.location.hostname === 'localhost' ||
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname.endsWith('.local'))
+  ) {
+    return 'http://localhost:8001';
+  }
+
+  // In production (e.g. Vercel): use the deployed Render HTTPS API
+  return 'https://canopy-network-project-1.onrender.com';
+}
 
 export interface BackendStatus {
   online: boolean;
@@ -17,10 +35,11 @@ export interface BackendStatus {
 
 /** Probes the FastAPI server health endpoint. */
 export async function checkBackendHealth(): Promise<BackendStatus> {
+  const baseUrl = getApiBaseUrl();
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 1500);
-    const res = await fetch(`${API_BASE_URL}/api/health`, {
+    const timeoutId = setTimeout(() => controller.abort(), 2500);
+    const res = await fetch(`${baseUrl}/api/health`, {
       signal: controller.signal,
     });
     clearTimeout(timeoutId);
@@ -30,11 +49,11 @@ export async function checkBackendHealth(): Promise<BackendStatus> {
       return {
         online: true,
         engine: data.engine || 'Python FastAPI',
-        url: API_BASE_URL,
+        url: baseUrl,
       };
     }
   } catch {
-    // Server is unreachable or offline
+    // Server is unreachable or sleeping
   }
 
   return {
@@ -79,7 +98,8 @@ export async function executeOptimization(
         };
       }
 
-      const res = await fetch(`${API_BASE_URL}/api/optimize`, {
+      const baseUrl = getApiBaseUrl();
+      const res = await fetch(`${baseUrl}/api/optimize`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
